@@ -1,23 +1,23 @@
-# Use Node.js 20 Alpine for smaller image size
-FROM node:20-alpine
+# Use Node.js 20 Debian Slim (better Prisma compatibility than Alpine)
+FROM node:20-slim
 
-# Install Python3, pip, ffmpeg, and OpenSSL packages (required for Prisma + yt-dlp)
-# Alpine uses apk. --no-cache keeps the image small.
-RUN apk add --no-cache \
+# Install system dependencies for Prisma, Python, and yt-dlp
+RUN apt-get update && apt-get install -y \
     python3 \
-    py3-pip \
+    python3-pip \
     ffmpeg \
     openssl \
-    openssl-dev \
-    openssl1.1-compat
+    libssl3 \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install yt-dlp via pip (breaking system packages allowed in container)
+# Install yt-dlp
 RUN pip3 install yt-dlp --break-system-packages
 
 # Create app directory
 WORKDIR /app
 
-# Copy package files first for caching (from backend directory)
+# Copy package files first for caching (from backend directory for monorepo)
 COPY backend/package*.json ./
 COPY backend/prisma ./prisma/
 
