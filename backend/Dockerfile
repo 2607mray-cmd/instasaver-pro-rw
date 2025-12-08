@@ -11,9 +11,9 @@ RUN pip3 install yt-dlp --break-system-packages
 # Create app directory
 WORKDIR /app
 
-# Copy package files first for caching
-COPY package*.json ./
-COPY prisma ./prisma/
+# Copy package files first for caching (from backend directory)
+COPY backend/package*.json ./
+COPY backend/prisma ./prisma/
 
 # Install dependencies (including devDeps for prisma generate)
 RUN npm install
@@ -21,8 +21,8 @@ RUN npm install
 # Generate Prisma client
 RUN npx prisma generate
 
-# Copy source code
-COPY . .
+# Copy source code (from backend directory)
+COPY backend/ ./
 
 # Set production environment
 ENV NODE_ENV=production
