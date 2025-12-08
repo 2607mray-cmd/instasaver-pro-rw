@@ -1,9 +1,9 @@
 # Use Node.js 20 Alpine for smaller image size
 FROM node:20-alpine
 
-# Install Python3, pip, and ffmpeg (required for yt-dlp)
+# Install Python3, pip, ffmpeg, and OpenSSL 1.1 (required for Prisma + yt-dlp)
 # Alpine uses apk. --no-cache keeps the image small.
-RUN apk add --no-cache python3 py3-pip ffmpeg
+RUN apk add --no-cache python3 py3-pip ffmpeg openssl1.1-compat
 
 # Install yt-dlp via pip (breaking system packages allowed in container)
 RUN pip3 install yt-dlp --break-system-packages
