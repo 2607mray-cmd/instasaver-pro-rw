@@ -11,7 +11,7 @@ const SCRIPT_PATH = path.join(__dirname, '../scripts/downloader.py');
  */
 function fetchVideoInfoPython(url) {
     return new Promise((resolve, reject) => {
-        const pythonProcess = spawn('python', [SCRIPT_PATH, url]);
+        const pythonProcess = spawn('python3', [SCRIPT_PATH, url]);
 
         let stdoutData = '';
         let stderrData = '';

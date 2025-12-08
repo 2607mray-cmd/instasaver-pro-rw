@@ -1,31 +1,33 @@
-# Use Node.js as base
-FROM node:18-slim
+# Use Node.js 20 Alpine for smaller image size
+FROM node:20-alpine
 
 # Install Python3, pip, and ffmpeg (required for yt-dlp)
-RUN apt-get update && apt-get install -y python3 python3-pip ffmpeg && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# Alpine uses apk. --no-cache keeps the image small.
+RUN apk add --no-cache python3 py3-pip ffmpeg
 
-# Install yt-dlp via pip to ensure latest version
-RUN pip3 install yt-dlp
+# Install yt-dlp via pip (breaking system packages allowed in container)
+RUN pip3 install yt-dlp --break-system-packages
 
 # Create app directory
 WORKDIR /app
 
-# Copy package files first
+# Copy package files first for caching
 COPY package*.json ./
+COPY prisma ./prisma/
 
-# Install npm dependencies
+# Install dependencies (including devDeps for prisma generate)
 RUN npm install
 
-# Copy generated prisma schema and generate client
-COPY prisma ./prisma/
+# Generate Prisma client
 RUN npx prisma generate
 
 # Copy source code
 COPY . .
 
-# Expose port (Render sets PORT env var)
+# Set production environment
+ENV NODE_ENV=production
+
+# Expose port (Railway sets PORT env var)
 EXPOSE 5000
 
 # Start command
