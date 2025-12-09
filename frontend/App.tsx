@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 import { Loader2 } from 'lucide-react';
 
 // Lazy load pages for better performance
@@ -19,6 +20,7 @@ const LoadingFallback = () => (
 const App: React.FC = () => {
   return (
     <Router>
+      <ScrollToTop />
       <div className="flex flex-col min-h-screen font-sans antialiased text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-900">
         <Navbar />
         <main className="flex-grow w-full max-w-[100vw] overflow-x-hidden">
@@ -31,6 +33,7 @@ const App: React.FC = () => {
               <Route path="/contact" element={<Legal />} />
               <Route path="/privacy" element={<Legal />} />
               <Route path="/terms" element={<Legal />} />
+              <Route path="/disclaimer" element={<Legal />} />
             </Routes>
           </Suspense>
         </main>

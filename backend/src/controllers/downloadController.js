@@ -33,6 +33,10 @@ async function downloadController(url) {
 
         // Cache for 10 minutes
         await setCache(cacheKey, JSON.stringify(result), 600);
+
+        // Increment global download count (fire and forget)
+        incrementDownloadCount().catch(err => console.error('Failed to increment count:', err));
+
         return result;
     } catch (err) {
         console.error('Download controller error:', err.message);
@@ -89,4 +93,48 @@ async function proxyDownloadController(fileUrl, isAttachment, res) {
     }
 }
 
-module.exports = { downloadController, proxyDownloadController };
+
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+
+/**
+ * Increments the global download count.
+ * Initializes to 26071999 if not set.
+ */
+async function incrementDownloadCount() {
+    try {
+        const stats = await prisma.globalStats.upsert({
+            where: { id: 1 },
+            update: { totalDownloads: { increment: 1 } },
+            create: { id: 1, totalDownloads: 26071999 + 1 },
+        });
+        return stats.totalDownloads;
+    } catch (err) {
+        console.error('Error incrementing download count:', err.message);
+        return 26071999;
+    }
+}
+
+/**
+ * Gets the current download count.
+ */
+async function getDownloadCount() {
+    try {
+        const stats = await prisma.globalStats.findUnique({
+            where: { id: 1 },
+        });
+        if (!stats) return 26071999;
+        return stats.totalDownloads;
+    } catch (err) {
+        console.error('Error getting download count:', err.message);
+        return 26071999;
+    }
+}
+
+module.exports = {
+    downloadController,
+    proxyDownloadController,
+    getDownloadCount,
+    incrementDownloadCount
+};
+

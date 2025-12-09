@@ -55,3 +55,8 @@ model PostTag {
   tagId  Int
   @@id([postId, tagId])
 }
+
+model GlobalStats {
+  id             Int @id @default(1)
+  totalDownloads Int @default(0)
+}

@@ -60,3 +60,15 @@ export const fetchVideoInfo = async (url: string): Promise<VideoResult> => {
     timestamp: Date.now()
   };
 };
+
+export const getGlobalDownloadCount = async (): Promise<number> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/download/count`);
+    if (!response.ok) return 26071999;
+    const data = await response.json();
+    return data.count || 26071999;
+  } catch (err) {
+    console.warn('Failed to fetch global stats', err);
+    return 26071999;
+  }
+};

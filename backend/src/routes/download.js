@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const { z } = require('zod');
-const { downloadController, proxyDownloadController } = require('../controllers/downloadController');
+const { downloadController, proxyDownloadController, getDownloadCount } = require('../controllers/downloadController');
 
 // Validation schema
 const downloadSchema = z.object({
@@ -28,6 +28,16 @@ router.get('/proxy', async (req, res, next) => {
             return res.status(400).json({ error: 'Missing url parameter' });
         }
         await proxyDownloadController(url, isAttachment, res);
+    } catch (err) {
+        next(err);
+    }
+});
+
+
+router.get('/count', async (req, res, next) => {
+    try {
+        const count = await getDownloadCount();
+        res.json({ count });
     } catch (err) {
         next(err);
     }

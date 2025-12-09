@@ -8,9 +8,9 @@ const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-1">
-             <span className="font-bold text-xl tracking-tight text-gray-900 dark:text-white">
-                InstaSaver<span className="text-brand-600">Pro</span>
-              </span>
+            <span className="font-bold text-xl tracking-tight text-gray-900 dark:text-white">
+              InstaSaver<span className="text-brand-600">Pro</span>
+            </span>
             <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
               The fastest way to download Instagram Reels, Videos, and Stories securely.
             </p>
@@ -29,7 +29,7 @@ const Footer: React.FC = () => {
               </a>
             </div>
           </div>
-          
+
           <div>
             <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Features</h3>
             <ul className="mt-4 space-y-3">
@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
             <ul className="mt-4 space-y-3">
               <li><Link to="/privacy" className="text-base text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400">Privacy Policy</Link></li>
               <li><Link to="/terms" className="text-base text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400">Terms of Use</Link></li>
-              <li><Link to="/about" className="text-base text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400">Disclaimer</Link></li>
+              <li><Link to="/disclaimer" className="text-base text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400">Disclaimer</Link></li>
             </ul>
           </div>
         </div>
